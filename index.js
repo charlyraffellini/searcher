@@ -1,10 +1,11 @@
 var express = require('express');
 var FileRepository = require('./src/fileRepository');
+var config = require("./src/config");
 var app = express();
 
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 
-var sourceDirectory = "./files";
+var sourceDirectory = config.sourceDir;
 var repo = new FileRepository(sourceDirectory);
 
 app.get('/', function (req, res) {
