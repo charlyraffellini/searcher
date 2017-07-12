@@ -1,17 +1,13 @@
 var express = require('express');
-var FileRepository = require('./src/fileRepository');
-var config = require("./src/config");
+var dependencyResolver = require("./src/dependencyResolver")
 var app = express();
 
 app.set('view engine', 'pug');
 
-var sourceDirectory = config.sourceDir;
-var repo = new FileRepository(sourceDirectory);
-
 app.get('/', function (req, res) {
-    var files = repo.getFiles();
-    
-    res.render("index", {files: files});
+    var fileSearch = dependencyResolver.fileSearch();
+    var model = fileSearch.search({});
+    res.render("index", model);
 })
 
 app.listen(8080);
