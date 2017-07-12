@@ -1,0 +1,21 @@
+branches:
+  only:
+    - master
+sudo: required
+language: node_js
+node_js:
+  - "7"
+services:
+  - docker
+install:
+  - sudo apt-get install node-gyp build-essential g++
+  - npm install
+after_success:
+  - export V_MAJOR=0
+  - export V_MINOR=1
+  - export VERSION=$V_MAJOR.$V_MINOR.$TRAVIS_BUILD_NUMBER
+  - echo $VERSION
+  - ls
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker build -f Dockerfile -t charlieraffellini/searcher:$VERSION -t charlieraffellini/searcher:latest .
+  - docker push charlieraffellini/searcher
